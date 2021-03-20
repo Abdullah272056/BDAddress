@@ -59,6 +59,19 @@ public class MainActivity extends AppCompatActivity implements
                 getDivisionData();
             }
         });
+        districtTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              String division=divisionTextView.getText().toString();
+              if (division.isEmpty()){
+                  Toast.makeText(MainActivity.this, "Please select your division", Toast.LENGTH_SHORT).show();
+                    return;
+              }else {
+
+
+              }
+            }
+        });
 
 
     }
@@ -106,8 +119,7 @@ public class MainActivity extends AppCompatActivity implements
         View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
         builder.setView(view);
         alertDialog   = builder.create();
-
-
+        alertDialog.setCancelable(false);
 
         divisionRecyclerView=view.findViewById(R.id.divisionRecyclerViewId);
         divisionCustomAdapter = new DivisionCustomAdapter(MainActivity.this,divisionDataList,onContactClickListener1);
@@ -120,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+
+
+
+
+    // division item click
     @Override
     public void onContactClick1(int position) {
         divisionTextView.setText(String.valueOf(divisionDataList.get(position).getDivision()));
