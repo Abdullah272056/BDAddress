@@ -23,11 +23,11 @@ public interface ApiInterface {
     // get division name
     @GET("api/v1.0/divisions")
     Call<GetDivisionResponseData> getAllDivision();
-//    //customer Data Edit
-//    @PUT("api/customer/{id}")
-//    Call<AddCustomerResponse> updateCustomerData(@Header("Authorization") String authorization2, @Path("id") String id, @Body CustomerData customerData);
 
 
+//    //get single customer information
+//    @GET("api/v1.0/division/{id}")
+//    Call<SingleCustomerGetResponse> getSingleCustomerInformation(@Header("Authorization") String authorization,@Path("id") String id);
 
 
 
