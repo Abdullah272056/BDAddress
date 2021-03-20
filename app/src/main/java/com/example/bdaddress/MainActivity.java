@@ -1,9 +1,13 @@
 package com.example.bdaddress;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     List<GetDivisionData> divisionDataList;
 
     TextView divisionTextView,districtTextView,thanaTextView;
+
+    AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         divisionTextView=findViewById(R.id.divisionTextViewId);
         districtTextView=findViewById(R.id.districtTextViewId);
         thanaTextView=findViewById(R.id.thanaTextViewId);
+
+        divisionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDivisionData();
+            }
+        });
+
 
     }
 
@@ -49,8 +63,14 @@ public class MainActivity extends AppCompatActivity {
                     divisionDataList=new ArrayList<>();
                     assert response.body() != null;
                     divisionDataList.addAll(response.body().getDivisionDataList());
-                    Log.e("size",String.valueOf(divisionDataList.size()));
-                    Toast.makeText(MainActivity.this, "sss", Toast.LENGTH_SHORT).show();
+
+
+                   if (divisionDataList.size()>0){
+                       Toast.makeText(MainActivity.this, "sss", Toast.LENGTH_SHORT).show();
+                     //  showDivisionData(divisionDataList);
+
+                   }
+
 
                 }
 
@@ -68,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }
