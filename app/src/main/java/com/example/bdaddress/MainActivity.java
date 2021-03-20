@@ -35,7 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-  
+    public  void  getDivisionData(){
+        apiInterface.getAllDivision().enqueue(new Callback<GetDivisionResponseData>() {
+            @Override
+            public void onResponse(Call<GetDivisionResponseData> call, Response<GetDivisionResponseData> response) {
+                if (response.code()==200){
+                    divisionDataList=new ArrayList<>();
+                    assert response.body() != null;
+                    divisionDataList.addAll(response.body().getDivisionDataList());
+                    Log.e("size",String.valueOf(divisionDataList.size()));
+                    Toast.makeText(MainActivity.this, "sss", Toast.LENGTH_SHORT).show();
+
+                }
+
+                else {
+                    Toast.makeText(MainActivity.this, "fff", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetDivisionResponseData> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "fff", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
 
 
 
