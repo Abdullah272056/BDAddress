@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showDivisionData(List<GetDivisionData> customerInformationDataList1){
+    private void showDivisionData(List<GetDivisionData> divisionDataList){
         AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
         LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
         View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         alertDialog.show();
+
+
     }
 
 }
