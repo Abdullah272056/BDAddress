@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-public void  getDistrict(String id){
+    public void  getDistrict(String id){
         apiInterface.getDistrict(id).enqueue(new Callback<GetDistrictResponseData>() {
             @Override
             public void onResponse(Call<GetDistrictResponseData> call, Response<GetDistrictResponseData> response) {
