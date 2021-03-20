@@ -7,13 +7,13 @@
     <TextView
         android:textSize="25sp"
         android:textAlignment="center"
-        android:text="select your division"
+        android:text="select your item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="10dp"
-        android:id="@+id/divisionRecyclerViewId"
+        android:id="@+id/recyclerViewId"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -20,8 +19,6 @@ import com.example.bdaddress.getDivision.GetDivisionData;
 import com.example.bdaddress.getDivision.GetDivisionResponseData;
 import com.example.bdaddress.retrofit.ApiInterface;
 import com.example.bdaddress.retrofit.RetrofitClient;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,12 +120,12 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
     private void showDivisionData(List<GetDivisionData> divisionDataList){
         AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
         LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
-        View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
+        View view                       =layoutInflater.inflate(R.layout.recyclerview,null);
         builder.setView(view);
         alertDialog   = builder.create();
         alertDialog.setCancelable(false);
 
-        divisionRecyclerView=view.findViewById(R.id.divisionRecyclerViewId);
+        divisionRecyclerView=view.findViewById(R.id.recyclerViewId);
         divisionCustomAdapter = new DivisionCustomAdapter(MainActivity.this,divisionDataList,onContactClickListener1);
         divisionRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         divisionRecyclerView.setAdapter(divisionCustomAdapter);
@@ -154,10 +151,10 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
                     if (districtDataList.size()>0){
 
-                        thanaDataList.addAll(districtDataList.get(1).getUpazilla());
+
                         showDistrict(districtDataList);
-                        Toast.makeText(MainActivity.this, String.valueOf(thanaDataList.size()), Toast.LENGTH_SHORT).show();
-                        //showDivisionData(divisionDataList);
+                       // Toast.makeText(MainActivity.this, String.valueOf(thanaDataList.size()), Toast.LENGTH_SHORT).show();
+
 
                     }
 
@@ -179,12 +176,12 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
     private void showDistrict(List<GetDistrictData> districtDataList){
         AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
         LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
-        View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
+        View view                       =layoutInflater.inflate(R.layout.recyclerview,null);
         builder.setView(view);
         alertDialog   = builder.create();
         alertDialog.setCancelable(false);
 
-        divisionRecyclerView=view.findViewById(R.id.divisionRecyclerViewId);
+        divisionRecyclerView=view.findViewById(R.id.recyclerViewId);
         districtCustomAdapter = new DistrictCustomAdapter(MainActivity.this,districtDataList,onContactClickListener2);
         divisionRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         divisionRecyclerView.setAdapter(districtCustomAdapter);
@@ -195,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
     }
 
+
+
+
     // division item click
     @Override
     public void onContactClick1(int position) {
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
     @Override
     public void onContactClick2(int position) {
+        thanaDataList.addAll(districtDataList.get(position).getUpazilla());
         districtTextView.setText(String.valueOf(districtDataList.get(position).getDistrict()));
         alertDialog.dismiss();
     }
