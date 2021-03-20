@@ -3,6 +3,7 @@ package com.example.bdaddress;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bdaddress.getDivision.DivisionCustomAdapter;
 import com.example.bdaddress.getDivision.GetDivisionData;
 import com.example.bdaddress.getDivision.GetDivisionResponseData;
 import com.example.bdaddress.retrofit.ApiInterface;
@@ -25,17 +27,26 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        DivisionCustomAdapter.OnContactClickListener1{
     ApiInterface apiInterface;
     List<GetDivisionData> divisionDataList;
 
     TextView divisionTextView,districtTextView,thanaTextView;
 
     AlertDialog alertDialog;
+
+    RecyclerView divisionRecyclerView;
+
+    DivisionCustomAdapter divisionCustomAdapter;
+    DivisionCustomAdapter.OnContactClickListener1 onContactClickListener1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        onContactClickListener1=this;
+
+
         apiInterface = RetrofitClient.getRetrofit("https://bdapis.herokuapp.com/").create(ApiInterface.class);
 
         divisionTextView=findViewById(R.id.divisionTextViewId);
@@ -98,10 +109,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        divisionRecyclerView=view.findViewById(R.id.divisionRecyclerViewId);
+        divisionCustomAdapter = new DivisionCustomAdapter(MainActivity.this,divisionDataList,onContactClickListener1);
+        divisionRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        divisionRecyclerView.setAdapter(divisionCustomAdapter);
+
 
         alertDialog.show();
 
 
     }
 
+    @Override
+    public void onContactClick1(int position) {
+        divisionTextView.setText(String.valueOf(divisionDataList.get(position).getDivision()));
+        alertDialog.dismiss();
+    }
 }

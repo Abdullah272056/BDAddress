@@ -15,13 +15,11 @@ import java.util.List;
 
 public class DivisionCustomAdapter extends RecyclerView.Adapter<DivisionCustomAdapter.MyViewHolder> {
     Context context;
-    String token;
     List<GetDivisionData> divisionDataList;
 
     DivisionCustomAdapter.OnContactClickListener1 onContactClickListener;
-    public DivisionCustomAdapter(Context context, String token, List<GetDivisionData> divisionDataList, DivisionCustomAdapter.OnContactClickListener1 onContactClickListener) {
+    public DivisionCustomAdapter(Context context, List<GetDivisionData> divisionDataList, DivisionCustomAdapter.OnContactClickListener1 onContactClickListener) {
         this.context = context;
-        this.token = token;
         this.divisionDataList = divisionDataList;
         this.onContactClickListener = onContactClickListener;
 
@@ -61,6 +59,7 @@ public class DivisionCustomAdapter extends RecyclerView.Adapter<DivisionCustomAd
         @Override
         public void onClick(View v) {
             onContactClickListener.onContactClick1(getAdapterPosition());
+
         }
     }
 
