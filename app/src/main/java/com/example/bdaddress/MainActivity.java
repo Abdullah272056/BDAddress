@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
                    if (divisionDataList.size()>0){
                        Toast.makeText(MainActivity.this, "sss", Toast.LENGTH_SHORT).show();
-                     //  showDivisionData(divisionDataList);
+                       showDivisionData(divisionDataList);
 
                    }
 
@@ -89,5 +89,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void showDivisionData(List<GetDivisionData> customerInformationDataList1){
+        AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
+        View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
+        builder.setView(view);
+        alertDialog   = builder.create();
+
+
+
+
+        alertDialog.show();
+    }
 
 }
