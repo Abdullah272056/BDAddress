@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bdaddress.getDistrict.GetDistrictData;
+import com.example.bdaddress.getDistrict.GetDistrictResponseData;
 import com.example.bdaddress.getDivision.DivisionCustomAdapter;
 import com.example.bdaddress.getDivision.GetDivisionData;
 import com.example.bdaddress.getDivision.GetDivisionResponseData;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements
         DivisionCustomAdapter.OnContactClickListener1{
     ApiInterface apiInterface;
     List<GetDivisionData> divisionDataList;
+    List<GetDistrictData> districtDataList;
+    List<String> thanaDataList;
 
     TextView divisionTextView,districtTextView,thanaTextView;
 
@@ -67,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements
                   Toast.makeText(MainActivity.this, "Please select your division", Toast.LENGTH_SHORT).show();
                     return;
               }else {
-
+                  getDistrict(division.toLowerCase());
 
               }
             }
@@ -132,7 +136,42 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+public void  getDistrict(String id){
+        apiInterface.getDistrict(id).enqueue(new Callback<GetDistrictResponseData>() {
+            @Override
+            public void onResponse(Call<GetDistrictResponseData> call, Response<GetDistrictResponseData> response) {
 
+
+                if (response.code()==200){
+                    districtDataList=new ArrayList<>();
+                    thanaDataList=new ArrayList<>();
+                    assert response.body() != null;
+                    districtDataList.addAll(response.body().getGetDistrictData());
+
+
+                    if (divisionDataList.size()>0){
+
+                        thanaDataList.addAll(districtDataList.get(1).getUpazilla());
+
+                        Toast.makeText(MainActivity.this, String.valueOf(thanaDataList.size()), Toast.LENGTH_SHORT).show();
+                        //showDivisionData(divisionDataList);
+
+                    }
+
+
+                }
+
+                else {
+                    Toast.makeText(MainActivity.this, "fff", Toast.LENGTH_SHORT).show();
+
+                }            }
+
+            @Override
+            public void onFailure(Call<GetDistrictResponseData> call, Throwable t) {
+
+            }
+        });
+}
 
 
 

@@ -1,6 +1,7 @@
 package com.example.bdaddress.retrofit;
 
 
+import com.example.bdaddress.getDistrict.GetDistrictResponseData;
 import com.example.bdaddress.getDivision.GetDivisionResponseData;
 
 import okhttp3.MultipartBody;
@@ -25,9 +26,9 @@ public interface ApiInterface {
     Call<GetDivisionResponseData> getAllDivision();
 
 
-//    //get single customer information
-//    @GET("api/v1.0/division/{id}")
-//    Call<SingleCustomerGetResponse> getSingleCustomerInformation(@Header("Authorization") String authorization,@Path("id") String id);
+    //get single customer information
+    @GET("api/v1.0/division/{id}")
+    Call<GetDistrictResponseData> getDistrict(@Path("id") String id);
 
 
 
