@@ -10,9 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bdaddress.R;
-import com.example.bdaddress.getDivision.DivisionCustomAdapter;
-import com.example.bdaddress.getDivision.GetDivisionData;
-
 import java.util.List;
 
 public class DistrictCustomAdapter extends RecyclerView.Adapter<DistrictCustomAdapter.MyViewHolder>{
@@ -38,7 +35,7 @@ public class DistrictCustomAdapter extends RecyclerView.Adapter<DistrictCustomAd
     @Override
     public void onBindViewHolder(@NonNull DistrictCustomAdapter.MyViewHolder holder, final int position) {
         holder.nameTextView.setText(String.valueOf(districtDataList.get(position).getDistrict()));
-        
+
     }
 
     @Override
@@ -59,13 +56,13 @@ public class DistrictCustomAdapter extends RecyclerView.Adapter<DistrictCustomAd
 
         @Override
         public void onClick(View v) {
-            onContactClickListener2.onContactClick1(getAdapterPosition());
+            onContactClickListener2.onContactClick2(getAdapterPosition());
 
         }
     }
 
     public  interface  OnContactClickListener2{
-        void onContactClick1(int position);
+        void onContactClick2(int position);
     }
 
 }

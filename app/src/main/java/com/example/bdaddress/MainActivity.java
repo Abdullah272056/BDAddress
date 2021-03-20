@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.bdaddress.getDistrict.DistrictCustomAdapter;
 import com.example.bdaddress.getDistrict.GetDistrictData;
 import com.example.bdaddress.getDistrict.GetDistrictResponseData;
 import com.example.bdaddress.getDivision.DivisionCustomAdapter;
@@ -29,8 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements
-        DivisionCustomAdapter.OnContactClickListener1{
+public class MainActivity extends AppCompatActivity implements DivisionCustomAdapter.OnContactClickListener1,DistrictCustomAdapter.OnContactClickListener2{
     ApiInterface apiInterface;
     List<GetDivisionData> divisionDataList;
     List<GetDistrictData> districtDataList;
@@ -43,12 +43,15 @@ public class MainActivity extends AppCompatActivity implements
     RecyclerView divisionRecyclerView;
 
     DivisionCustomAdapter divisionCustomAdapter;
+    DistrictCustomAdapter districtCustomAdapter;
     DivisionCustomAdapter.OnContactClickListener1 onContactClickListener1;
+    DistrictCustomAdapter.OnContactClickListener2 onContactClickListener2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         onContactClickListener1=this;
+        onContactClickListener2=this;
 
 
         apiInterface = RetrofitClient.getRetrofit("https://bdapis.herokuapp.com/").create(ApiInterface.class);
@@ -149,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements
                     districtDataList.addAll(response.body().getGetDistrictData());
 
 
-                    if (divisionDataList.size()>0){
+                    if (districtDataList.size()>0){
 
                         thanaDataList.addAll(districtDataList.get(1).getUpazilla());
-
+                        showDistrict(districtDataList);
                         Toast.makeText(MainActivity.this, String.valueOf(thanaDataList.size()), Toast.LENGTH_SHORT).show();
                         //showDivisionData(divisionDataList);
 
@@ -173,12 +176,35 @@ public class MainActivity extends AppCompatActivity implements
         });
 }
 
+    private void showDistrict(List<GetDistrictData> districtDataList){
+        AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
+        View view                       =layoutInflater.inflate(R.layout.division_recyclerview,null);
+        builder.setView(view);
+        alertDialog   = builder.create();
+        alertDialog.setCancelable(false);
 
+        divisionRecyclerView=view.findViewById(R.id.divisionRecyclerViewId);
+        districtCustomAdapter = new DistrictCustomAdapter(MainActivity.this,districtDataList,onContactClickListener2);
+        divisionRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        divisionRecyclerView.setAdapter(districtCustomAdapter);
+
+
+        alertDialog.show();
+
+
+    }
 
     // division item click
     @Override
     public void onContactClick1(int position) {
         divisionTextView.setText(String.valueOf(divisionDataList.get(position).getDivision()));
+        alertDialog.dismiss();
+    }
+
+    @Override
+    public void onContactClick2(int position) {
+        districtTextView.setText(String.valueOf(districtDataList.get(position).getDistrict()));
         alertDialog.dismiss();
     }
 }
