@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.bdaddress.getDistrict.DistrictCustomAdapter;
 import com.example.bdaddress.getDistrict.GetDistrictData;
 import com.example.bdaddress.getDistrict.GetDistrictResponseData;
+import com.example.bdaddress.getDistrict.ThanaCustomAdapter;
+import com.example.bdaddress.getDistrict.ThanaData;
 import com.example.bdaddress.getDivision.DivisionCustomAdapter;
 import com.example.bdaddress.getDivision.GetDivisionData;
 import com.example.bdaddress.getDivision.GetDivisionResponseData;
@@ -27,7 +29,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements DivisionCustomAdapter.OnContactClickListener1,DistrictCustomAdapter.OnContactClickListener2{
+public class MainActivity extends AppCompatActivity implements DivisionCustomAdapter.OnContactClickListener1,
+        DistrictCustomAdapter.OnContactClickListener2,ThanaCustomAdapter.OnContactClickListener3{
     ApiInterface apiInterface;
     List<GetDivisionData> divisionDataList;
     List<GetDistrictData> districtDataList;
@@ -41,14 +44,17 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
     DivisionCustomAdapter divisionCustomAdapter;
     DistrictCustomAdapter districtCustomAdapter;
+    ThanaCustomAdapter thanaCustomAdapter;
     DivisionCustomAdapter.OnContactClickListener1 onContactClickListener1;
     DistrictCustomAdapter.OnContactClickListener2 onContactClickListener2;
+    ThanaCustomAdapter.OnContactClickListener3 onContactClickListener3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         onContactClickListener1=this;
         onContactClickListener2=this;
+        onContactClickListener3=this;
 
 
         apiInterface = RetrofitClient.getRetrofit("https://bdapis.herokuapp.com/").create(ApiInterface.class);
@@ -74,6 +80,20 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
                   getDistrict(division.toLowerCase());
 
               }
+            }
+        });
+        thanaTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String district=districtTextView.getText().toString();
+                if (district.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Please select your Thana", Toast.LENGTH_SHORT).show();
+                    return;
+                }else {
+
+                    showThana(thanaDataList);
+
+                }
             }
         });
 
@@ -168,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
             @Override
             public void onFailure(Call<GetDistrictResponseData> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "fff", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -192,20 +213,49 @@ public class MainActivity extends AppCompatActivity implements DivisionCustomAda
 
     }
 
+/////////////////////
+    private void showThana(List<String> thanaDataList){
+        AlertDialog.Builder builder     =new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater layoutInflater   =LayoutInflater.from(MainActivity.this);
+        View view                       =layoutInflater.inflate(R.layout.recyclerview,null);
+        builder.setView(view);
+        alertDialog   = builder.create();
+        alertDialog.setCancelable(false);
+
+        divisionRecyclerView=view.findViewById(R.id.recyclerViewId);
+        thanaCustomAdapter = new ThanaCustomAdapter(MainActivity.this,thanaDataList,onContactClickListener3);
+        divisionRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        divisionRecyclerView.setAdapter(thanaCustomAdapter);
+
+
+        alertDialog.show();
+
+
+    }
 
 
 
     // division item click
     @Override
     public void onContactClick1(int position) {
+        thanaTextView.setText("");
+        districtTextView.setText("");
         divisionTextView.setText(String.valueOf(divisionDataList.get(position).getDivision()));
         alertDialog.dismiss();
     }
 
     @Override
     public void onContactClick2(int position) {
+        thanaTextView.setText("");
         thanaDataList.addAll(districtDataList.get(position).getUpazilla());
         districtTextView.setText(String.valueOf(districtDataList.get(position).getDistrict()));
+        alertDialog.dismiss();
+    }
+
+    @Override
+    public void onContactClick3(int position) {
+
+        thanaTextView.setText(String.valueOf(thanaDataList.get(position)));
         alertDialog.dismiss();
     }
 }
